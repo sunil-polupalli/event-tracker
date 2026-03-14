@@ -25,7 +25,10 @@ describe('POST /api/v1/activities', () => {
             .send(payload);
 
         expect(response.status).toBe(202);
-        expect(rabbitmq.publishActivity).toHaveBeenCalledWith(payload);
+        expect(rabbitmq.publishActivity).toHaveBeenCalledWith({
+            ...payload,
+            timestamp: new Date(payload.timestamp)
+        });
     });
 
     it('should return 400 for invalid payload', async () => {
